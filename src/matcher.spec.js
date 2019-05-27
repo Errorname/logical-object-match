@@ -545,5 +545,74 @@ describe('matcher', () => {
         }
       )
     ).toBe(false)
+
+    // every
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_every: { rating_gte: 85 }
+        }
+      )
+    ).toBe(true)
+
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_every: { name_starts_with: 'Lost' }
+        }
+      )
+    ).toBe(false)
+
+    // some
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_some: { rating_gte: 90 }
+        }
+      )
+    ).toBe(true)
+
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_some: { name_starts_with: 'Star' }
+        }
+      )
+    ).toBe(false)
+
+    // none
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_none: { rating_lte: 80 }
+        }
+      )
+    ).toBe(true)
+
+    expect(
+      matcher(
+        {
+          movies: [{ name: 'Lost in Translation', rating: 95 }, { name: 'John Wick', rating: 86 }]
+        },
+        {
+          movies_none: { name_starts_with: 'Lost' }
+        }
+      )
+    ).toBe(false)
   })
 })

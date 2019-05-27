@@ -187,3 +187,33 @@ let def = {
   title_not_ends_with: 'Wars'
 }
 ```
+
+- `_every` requires all items of the array to match the given definition
+
+```js
+let def = {
+  movies_every: {
+    rating_gte: 80
+  }
+}
+```
+
+- `_some` requires at least one of the items of the array to match the given definition
+
+```js
+let def = {
+  movies_some: {
+    rating_gte: 90
+  }
+}
+```
+
+- `_every` requires that none of the items of the array match the given definition
+
+```js
+let def = {
+  movies_none: {
+    rating_gte: 60
+  }
+}
+```

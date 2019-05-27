@@ -2,16 +2,22 @@ const suffixes: { [suffixe: string]: Function } = {
   _not: (objValue: any, defValue: any) => objValue !== defValue,
   _not_in: (objValue: any, defValue: any[]) => !defValue.includes(objValue),
   _in: (objValue: any, defValue: any[]) => defValue.includes(objValue),
-  _lt: (objValue: any, defValue: any[]) => objValue < defValue,
-  _lte: (objValue: any, defValue: any[]) => objValue <= defValue,
-  _gt: (objValue: any, defValue: any[]) => objValue > defValue,
-  _gte: (objValue: any, defValue: any[]) => objValue >= defValue,
+  _lt: (objValue: Number, defValue: Number) => objValue < defValue,
+  _lte: (objValue: Number, defValue: Number) => objValue <= defValue,
+  _gt: (objValue: Number, defValue: Number) => objValue > defValue,
+  _gte: (objValue: Number, defValue: Number) => objValue >= defValue,
   _not_contains: (objValue: any, defValue: any[]) => !objValue.includes(defValue),
   _contains: (objValue: any, defValue: any[]) => objValue.includes(defValue),
-  _not_starts_with: (objValue: any, defValue: any[]) => !objValue.startsWith(defValue),
-  _starts_with: (objValue: any, defValue: any[]) => objValue.startsWith(defValue),
-  _not_ends_with: (objValue: any, defValue: any[]) => !objValue.endsWith(defValue),
-  _ends_with: (objValue: any, defValue: any[]) => objValue.endsWith(defValue)
+  _not_starts_with: (objValue: string, defValue: string) => !objValue.startsWith(defValue),
+  _starts_with: (objValue: string, defValue: string) => objValue.startsWith(defValue),
+  _not_ends_with: (objValue: string, defValue: string) => !objValue.endsWith(defValue),
+  _ends_with: (objValue: string, defValue: string) => objValue.endsWith(defValue),
+  _every: (array: any[], definition: any, matcher: Function) =>
+    array.every(item => matcher(item, definition)),
+  _some: (array: any[], definition: any, matcher: Function) =>
+    array.some(item => matcher(item, definition)),
+  _none: (array: any[], definition: any, matcher: Function) =>
+    !array.some(item => matcher(item, definition))
 }
 
 const matcher = (object: any, definition: any): boolean => {
@@ -25,34 +31,25 @@ const matcher = (object: any, definition: any): boolean => {
   ) {
     if (definitionKeys.length > 1) throw new Error()
 
-    const [operation, subDefinitions] = definitionEntries[0]
+    const [operation, subDefinitions] = definitionEntries[0] as [string, any[]]
 
     switch (operation) {
       case 'OR':
-        return (subDefinitions as any[]).reduce(
-          (acc: boolean, def: any) => acc || matcher(object, def),
-          false
-        )
+        return subDefinitions.reduce((acc: boolean, def: any) => acc || matcher(object, def), false)
       case 'AND':
-        return (subDefinitions as any[]).reduce(
-          (acc: boolean, def: any) => acc && matcher(object, def),
-          true
-        )
+        return subDefinitions.reduce((acc: boolean, def: any) => acc && matcher(object, def), true)
       case 'NOT':
-        return !(subDefinitions as any[]).reduce(
+        return !subDefinitions.reduce(
           (acc: boolean, def: any) => acc || matcher(object, def),
           false
         )
     }
   }
 
-  // Check each field of definition
   return definitionEntries.reduce((acc: boolean, [defKey, defValue]) => {
-    const suffixesKeys = Object.keys(suffixes)
-
-    for (let suffixe of suffixesKeys) {
+    for (let suffixe of Object.keys(suffixes)) {
       if (defKey.endsWith(suffixe)) {
-        return acc && suffixes[suffixe](object[defKey.slice(0, -suffixe.length)], defValue)
+        return acc && suffixes[suffixe](object[defKey.slice(0, -suffixe.length)], defValue, matcher)
       }
     }
 
@@ -62,15 +59,9 @@ const matcher = (object: any, definition: any): boolean => {
 
 /*
   TODO:
-  - Finish suffixes
   - Documentation
   - Refactor
   - Better type checking in suffixes and operation
-
-  TODO:
-  _every
-  _some
-  _none
 */
 
 export default matcher
