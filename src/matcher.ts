@@ -39,7 +39,10 @@ const matcher = (object: any, definition: any): boolean => {
           true
         )
       case 'NOT':
-        return !matcher(object, subDefinitions)
+        return !(subDefinitions as any[]).reduce(
+          (acc: boolean, def: any) => acc || matcher(object, def),
+          false
+        )
     }
   }
 

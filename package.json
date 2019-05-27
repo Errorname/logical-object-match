@@ -1,6 +1,6 @@
 {
   "name": "logical-object-match",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Logical match of a JS object",
   "main": "src/index.js",
   "scripts": {

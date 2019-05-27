@@ -151,7 +151,7 @@ describe('matcher', () => {
           pet: 'cat'
         },
         {
-          NOT: { name: 'Errorname' }
+          NOT: [{ name: 'Errorname' }, { pet: 'dog' }]
         }
       )
     ).toBe(true)
@@ -163,7 +163,7 @@ describe('matcher', () => {
           pet: 'cat'
         },
         {
-          NOT: { name: 'Thibaud' }
+          NOT: [{ name: 'Thibaud' }, { pet: 'dog' }]
         }
       )
     ).toBe(false)
@@ -176,7 +176,7 @@ describe('matcher', () => {
         },
         {
           name: 'Thibaud',
-          NOT: { pet: 'cat' }
+          NOT: [{ pet: 'cat' }]
         }
       )
     }).toThrow()
@@ -194,7 +194,7 @@ describe('matcher', () => {
           OR: [
             { name: 'Errorname' },
             {
-              AND: [{ pet: 'cat' }, { NOT: { petName: 'Roger' } }]
+              AND: [{ pet: 'cat' }, { NOT: [{ petName: 'Roger' }] }]
             }
           ]
         }
