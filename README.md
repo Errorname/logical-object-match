@@ -62,7 +62,8 @@ const movies = [
   }
 ]
 
-const goodMovies = movies.filter(movie => matcher(movie, { rating_gte: 85 })) // Will return an array with the Lost in Translation and John Wick objects
+const goodMovies = movies.filter(movie => matcher(movie, { rating_gte: 85 }))
+// Will return an array with the Lost in Translation and John Wick objects
 ```
 
 ## Documentation
@@ -114,6 +115,21 @@ let def = {
 
 You can use suffixes for more matching conditions:
 
+- [`_not`](#not)
+- [`_in`](#in) and [`_not_in`](#in)
+- [`_lt`](#lt) and [`_lte`](#lt)
+- [`_gt`](#gt) and [`_gte`](#gt)
+- [`_contains`](#contains) and [`_not_contains`](#contains)
+- [`_starts_with`](#starts-with) and [`_not_starts_with`](#starts-with)
+- [`_ends_with`](#ends-with) and [`_not_ends_with`](#ends-with)
+- [`_every`](#every)
+- [`_some`](#some)
+- [`_none`](#none)
+
+---
+
+<a id="not"></a>
+
 - `_not` requires the attribute not to be the given value
 
 ```js
@@ -121,6 +137,8 @@ let def = {
   title_not: 'Star Wars'
 }
 ```
+
+<a id="in"></a>
 
 - `_in` and `_not_in` requires the attribute to be one of the given value
 
@@ -133,6 +151,8 @@ let def = {
 }
 ```
 
+<a id="lt"></a>
+
 - `_lt` and `_lte` requires the attribute to be less than (or equal) the given number
 
 ```js
@@ -143,6 +163,8 @@ let def = {
   rating_lte: 98
 }
 ```
+
+<a id="gt"></a>
 
 - `_gt` and `_gte` requires the attribute to be greater than (or equal) the given number
 
@@ -155,6 +177,8 @@ let def = {
 }
 ```
 
+<a id="contains"></a>
+
 - `_contains` and `_not_contains` requires the attribute to contains the given value
 
 ```js
@@ -165,6 +189,8 @@ let def = {
   cast_not_contains: 'Jude Law'
 }
 ```
+
+<a id="starts-with"></a>
 
 - `_starts_with` and `_not_starts_with` requires the attribute to starts with the given string
 
@@ -177,6 +203,8 @@ let def = {
 }
 ```
 
+<a id="ends-with"></a>
+
 - `_ends_with` and `_not_ends_with` requires the attribute to ends with the given string
 
 ```js
@@ -188,6 +216,8 @@ let def = {
 }
 ```
 
+<a id="every"></a>
+
 - `_every` requires all items of the array to match the given definition
 
 ```js
@@ -197,6 +227,8 @@ let def = {
   }
 }
 ```
+
+<a id="some"></a>
 
 - `_some` requires at least one of the items of the array to match the given definition
 
@@ -208,7 +240,9 @@ let def = {
 }
 ```
 
-- `_every` requires that none of the items of the array match the given definition
+<a id="none"></a>
+
+- `_none` requires that none of the items of the array match the given definition
 
 ```js
 let def = {
